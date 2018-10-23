@@ -1,9 +1,6 @@
 package assignment1;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 
 public class Exercise_1_4_Containment {
 
@@ -24,25 +21,28 @@ public class Exercise_1_4_Containment {
             int a1_index=0;
             int a2_index=0;
             
-            
+            // If content of first cell in both arrays is differnt, 
+            // no further steps are required.
             boolean isSubset = a1[a1_index] == a2[a2_index];
             a1_index++; a2_index++;
             
+            // Starting from the second cell until reaching the end of any of the arrays.
             while(isSubset && a1_index < a1.length && a2_index < a2.length){
+                // Duplicate in a1
                 if(a1[a1_index] == a1[a1_index-1])
                     a1_index++;
                 
+                // Duplicate in a2
                 if(a2[a2_index] == a2[a2_index-1])
                     a2_index++;
                 
+                // A new value was reached in both arrays
                 if(a1[a1_index] != a1[a1_index-1] && a2[a2_index] != a2[a2_index-1]){
                 
+                    // If its the same value, move on to next cell in both arrays.
+                    // If not, keep looking for current value in a2.
                     if(a1[a1_index] != a2[a2_index]){
-//                        isSubset = false; 
                         a2_index++;
-//                        System.out.println("a1_index= " + a1_index);
-//                        System.out.println("a2_index= " + a2_index);
-//                        System.out.println("Fuck you!");
                     }
                     else{
                         a1_index++; 
@@ -51,10 +51,11 @@ public class Exercise_1_4_Containment {
                 }
             }
             
+            // Last indexed cells would have equal value if a1 is contained on a2.
             if (a1[a1_index-1] != a2[a2_index-1])
                 isSubset = false;
             
-            return isSubset;		//TODO
+            return isSubset;
 	}
 	
 
