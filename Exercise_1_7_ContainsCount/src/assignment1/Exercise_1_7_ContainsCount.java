@@ -24,10 +24,27 @@ public class Exercise_1_7_ContainsCount {
 	 * Determines how often character ch occurs in array arr 
 	 */
 	public static int count(char ch, char[] arr) {
-			// TODO
-            return -1;
+            return count(ch,arr, arr.length-1);
 	}
 
+        /*
+        * The recursive sister of count(char ch,char[] arr)
+        * receives the index of last cell and calls itself while decresing it.
+        */
+        private static int count(char ch, char[] arr, int endIndex){
+            // Stop condition: reached beginning of the array
+            if(endIndex == -1){
+                return 0;
+            }
+            else{
+                // recursive branch. increment the return each time the character is found.
+                if(arr[endIndex] == ch)
+                    return count(ch,arr, endIndex-1) + 1;
+                // simply proceed when not
+                else
+                    return count(ch,arr,endIndex-1);
+            }
+        }
 	
 
 	public static void demoContains() {
