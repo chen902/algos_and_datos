@@ -27,13 +27,13 @@ public class Exercise_1_4_Containment {
             a1_index++; a2_index++;
             
             // Starting from the second cell until reaching the end of any of the arrays.
-            while(isSubset && a1_index < a1.length && a2_index < a2.length){
+            while(isSubset && (a1_index != a1.length && a2_index != a2.length)){
                 // Duplicate in a1
-                if(a1[a1_index] == a1[a1_index-1])
+                if(a1_index != a1.length && a1[a1_index] == a1[a1_index-1])
                     a1_index++;
                 
                 // Duplicate in a2
-                if(a2[a2_index] == a2[a2_index-1])
+                if(a2_index != a2.length && a2[a2_index] == a2[a2_index-1])
                     a2_index++;
                 
                 // A new value was reached in both arrays
@@ -44,7 +44,9 @@ public class Exercise_1_4_Containment {
                 
                     // If its the same value, move on to next cell in both arrays.
                     // If not, keep looking for current value in a2.
-                    if(a1[a1_index] != a2[a2_index]){
+                    if(a1[a1_index] < a2[a2_index]){
+                        isSubset = false;
+                    }else if(a1[a1_index] > a2[a2_index]){
                         a2_index++;
                     }
                     else{
@@ -54,12 +56,11 @@ public class Exercise_1_4_Containment {
                 }
             }
             
-            // Last indexed cells would have equal value if a1 is contained on a2.
-            if (a1_index == a1.length && (a1[a1_index - 1] == a2[a2_index - 1]))
-                isSubset = true;
-            else
-                
-                isSubset = false;
+            //Last indexed cells would have equal value if a1 is contained on a2.
+//            if (a1[a1_index - 1] == a2[a2_index - 1])
+//                isSubset = true;
+//            else                
+//                isSubset = false;
             
             return isSubset;
 	}
