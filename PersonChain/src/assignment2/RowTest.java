@@ -10,13 +10,14 @@ public class RowTest {
 	 */
 	public static void reorder(PersonRow m) {
             
-            int cIndex = 0; // Child index
-            int aIndex = m.size() - 1; // Adult index
+            int cIndex = 0; // Child boundary
+            int aIndex = m.size() - 1; // Adult boundary
             
-            boolean foundChild = false;
-            boolean foundAdult = false;
+            // Do the boundaries already contain the proper values?
+            boolean foundChild = m.getAgeGroup(cIndex) == AgeGroup.CHILD;
+            boolean foundAdult = m.getAgeGroup(aIndex) == AgeGroup.ADULT;
             
-            // Set first cell to child, last cell to adult, teens go in between.
+            // Looks for the first CHILD and ADULT, swaps them to the boundaries
             for(int i=0; !(foundChild && foundAdult) && i<m.size(); i++){
                 AgeGroup ag = m.getAgeGroup(i);
                 
@@ -33,27 +34,49 @@ public class RowTest {
                 }
             }
             
+            // better safe then sorry
+            if(!(foundAdult && foundChild))
+                throw new RuntimeException("Missing values in PersonRow");
+                
+            
             // Iterating all the cells in between the first child and last adult
             int i = cIndex + 1;
-            
-            while(i<m.size() - 1){
+        
+            /*
+            * First cell is CHILD and last is an ADULT, these are set as 'boundaries'.
+            * Traversing all cells in between, encountered CHILD cells are swapped with the adjacent
+            * cells to the boundaries and they are adjusted accordingly.
+            */
+            while(i<aIndex){ 
                 AgeGroup ag = m.getAgeGroup(i);
-                if(ag == AgeGroup.CHILD){
-                    m.swap(i,cIndex+1);
-                    i++;
-                    cIndex++;
-                }else if(ag == AgeGroup.ADULT){
-                    if(m.getAgeGroup(aIndex-1) == AgeGroup.ADULT)
-                        aIndex--;
-                    else{
-                        m.swap(i, aIndex-1);
+        
+                switch (ag) {
+                    case CHILD:
+                        // swap CHILD into place  
+                        m.swap(i, cIndex + 1);
+                        // new CHILD becomes the new boundary
+                        cIndex++;
+                        // next cell
                         i++;
-                        aIndex++;
-                    }
-                }else{
-                    i++;
+                        break;
+                    case ADULT:
+                        // No need to swap ADULT with an ADULT just adjust the boundary
+                        if(m.getAgeGroup(aIndex-1) == AgeGroup.ADULT)
+                            aIndex--;
+                        else{
+                            // Swap and adjust boundary but stay on current cell
+                            // so that next iteration it'll be checked
+                            m.swap(i, aIndex-1);
+                            aIndex--;
+                        }   
+                        break;
+                    case TEENAGER:
+                        // TEENAGER cells are just left untouched and should all
+                        // end up in between the boundaries
+                        i++;
+                        break;
                 }  
-            }
+            }            
 	}
 	
 	
