@@ -18,7 +18,7 @@ public class Main {
         sortingAlgos.put("Heap Sort", Sort::heapsort);
         sortingAlgos.put("Merge Sort", Sort::mergesort);
         
-        for(int n=100; n<=100000; n*=10){
+        for(int n=100; n<=10000000; n*=10){
             double[] arr = Sort.generateTestData(n);
             System.out.println(n+ " elements:");
             
